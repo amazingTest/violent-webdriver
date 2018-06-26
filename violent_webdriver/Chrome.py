@@ -84,9 +84,9 @@ class violent_chromedriver(webdriver.Chrome):
            succeed or the attempt_num has been using up
 
            :Args:
-            - attempt_num (int)- the num of click you want to attempt, default num is 60
-            - attempt_interval (int)- the time interval of each attempt in second, default interval is 1s
-            - locate_rule (two-dimention array) - the rule that use to locate the webelement you want to operate
+            - attempt_num <int>- the num of click you want to attempt, default num is 60
+            - attempt_interval <int>- the time interval of each attempt in second, default interval is 1s
+            - locate_rule <two-dimention array> - the rule that use to locate the webelement you want to operate
 
                 for single-locate strategy , support : [id] , [xpath] , [name]
                            eg [['id', 'some_id']] , [['xpath', 'some_xpath']] , [['name', 'some_name']]
@@ -438,8 +438,8 @@ class violent_chromedriver(webdriver.Chrome):
         """
         to see whether the web page refreshed in curtain time
 
-        :param trigger: the web element that exist in the last page (webelement)
-        :param wait_time: the time(in sec) that wait until the page refreshed, default is 60 (int)
+        :param trigger: the web element that exist in the last page <webelement>
+        :param wait_time: the time(in sec) that wait until the page refreshed, default is 60 <int>
         :return: True if page is refreshed in wait_time ,
                   False if page is not refreshed in wait_time
         """
@@ -463,7 +463,7 @@ class violent_chromedriver(webdriver.Chrome):
         """
         to see whether new window opened in curtain time
 
-        :param wait_time: the time(in sec) that wait until the page refreshed, default is 60 (int)
+        :param wait_time: the time(in sec) that wait until the page refreshed, default is 60 <int>
         :return: True if new window is opened in wait_time ,
                   False if new window is not opened in wait_time
         """
