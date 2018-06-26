@@ -1,5 +1,8 @@
 # violent_webdriver
-post-packaging selenium webdriver,  there are many violent and convinient functions which insure the browser operation 
+violent_webdriver is created by post-packaging selenium webdriver,  violent_webdriver has many convinient functions
+which can highly insure the browser operation, you don't need to worry about whether the element is really present
+on current page or clickable at specific time while using violent webdriver. it will handle this sort
+of annoying problems
 
 Find the latest version on github : https://github.com/amazingTest/violent_webdriver
 
