@@ -1,5 +1,4 @@
 # violent_webdriver
-
 violent_webdriver is created by post-packaging selenium webdriver,  violent_webdriver has many convinient functions
 which can highly insure the browser operation, you don't need to worry about whether the element is really present
 on current page or clickable at specific time while using violent webdriver. it will handle this sort
@@ -8,7 +7,6 @@ of annoying problems
 Find the latest version on github : https://github.com/amazingTest/violent_webdriver
 
 ## Installation
-
 The last stable release is available on PyPI and can be installed with pip.
 make sure that Chrome has been installed and match the selenium version
 
@@ -17,7 +15,6 @@ make sure that Chrome has been installed and match the selenium version
     $ pip install violent_webdriver
 
 ## Best Practice
-
 Firstly, create a python file: c:\folder\mytest.py
 
     # c:\folder\mytest.py
@@ -38,5 +35,4 @@ For more code examples, please refer to the examples folder in source distributi
 visit https://github.com/amazingTest/violent_webdriver/tree/master/examples
 
 ## Contact me
-
 For information and suggestions you can contact me at 523314409@qq.com
