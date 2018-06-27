@@ -436,7 +436,7 @@ class violent_chromedriver(webdriver.Chrome):
 
     def is_page_refreshed(self, trigger, wait_time=60):
         """
-        to see whether the web page refreshed in curtain time
+        to see whether the web page refreshed in certain time
 
         :param trigger: the web element that exist in the last page <webelement>
         :param wait_time: the time(in sec) that wait until the page refreshed, default is 60 <int>
@@ -461,7 +461,7 @@ class violent_chromedriver(webdriver.Chrome):
 
     def is_open_new_window(self, wait_time=60):
         """
-        to see whether new window opened in curtain time
+        to see whether new window opened in certain time
 
         :param wait_time: the time(in sec) that wait until the page refreshed, default is 60 <int>
         :return: True if new window is opened in wait_time ,
