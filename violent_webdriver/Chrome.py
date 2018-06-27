@@ -35,7 +35,7 @@ class violent_chromedriver(webdriver.Chrome):
             - use_mobile_emulation: whether use mobile emulation or not , default is False
         """
 
-        if self.use_mobile_emulation:
+        if use_mobile_emulation:
             mobile_emulation = {
                 "deviceMetrics": {"width": 360, "height": 640, "pixelRatio": 3.0},
                 "userAgent": "Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 5 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19"}
@@ -75,7 +75,7 @@ class violent_chromedriver(webdriver.Chrome):
             raise
         self._is_remote = False
 
-    def v_click(self, attempt_num=60, attempt_interval=1, locate_rule=None):
+    def v_click(self, locate_rule, attempt_num=60, attempt_interval=1):
 
         """
            Post-packaging the [click] function of selenium webdriver
@@ -124,71 +124,70 @@ class violent_chromedriver(webdriver.Chrome):
                     except WebDriverException:
                         time.sleep(attempt_interval)
                         continue
-            if locate_rule:
-                if locate_rule[0][0] == 'tag' and locate_rule[1][0] == 'text':
-                    for i in range(0, attempt_num):
-                        try:
-                            tag_list = self.find_elements_by_tag_name(locate_rule[0][1])
-                            i = 0
-                            for tag in tag_list:
-                                if tag.text == locate_rule[1][1]:
-                                    TouchActions(self).tap(tag).perform()
-                                    i += 1
-                                    break
-                            if i == 0:
-                                continue
-                            break
-                        except WebDriverException:
-                            time.sleep(attempt_interval)
+            if locate_rule[0][0] == 'tag' and locate_rule[1][0] == 'text':
+                for i in range(0, attempt_num):
+                    try:
+                        tag_list = self.find_elements_by_tag_name(locate_rule[0][1])
+                        i = 0
+                        for tag in tag_list:
+                            if tag.text == locate_rule[1][1]:
+                                TouchActions(self).tap(tag).perform()
+                                i += 1
+                                break
+                        if i == 0:
                             continue
-                if locate_rule[0][0] == 'tag' and not locate_rule[1][0] == 'text':
-                    for i in range(0, attempt_num):
-                        try:
-                            tag_list = self.find_elements_by_tag_name(locate_rule[0][1])
-                            i = 0
-                            for tag in tag_list:
-                                if tag.get_attribute(locate_rule[1][0]) == locate_rule[1][1]:
-                                    TouchActions(self).tap(tag).perform()
-                                    i += 1
-                                    break
-                            if i == 0:
-                                continue
-                            break
-                        except WebDriverException:
-                            time.sleep(attempt_interval)
+                        break
+                    except WebDriverException:
+                        time.sleep(attempt_interval)
+                        continue
+            if locate_rule[0][0] == 'tag' and not locate_rule[1][0] == 'text':
+                for i in range(0, attempt_num):
+                    try:
+                        tag_list = self.find_elements_by_tag_name(locate_rule[0][1])
+                        i = 0
+                        for tag in tag_list:
+                            if tag.get_attribute(locate_rule[1][0]) == locate_rule[1][1]:
+                                TouchActions(self).tap(tag).perform()
+                                i += 1
+                                break
+                        if i == 0:
                             continue
-                if locate_rule[0][0] == 'class' and locate_rule[1][0] == 'text':
-                    for i in range(0, attempt_num):
-                        try:
-                            div_list = self.find_elements_by_class_name(locate_rule[0][1])
-                            i = 0
-                            for div in div_list:
-                                if div.text == locate_rule[1][1]:
-                                    TouchActions(self).tap(div).perform()
-                                    i += 1
-                                    break
-                            if i == 0:
-                                continue
-                            break
-                        except WebDriverException:
-                            time.sleep(attempt_interval)
+                        break
+                    except WebDriverException:
+                        time.sleep(attempt_interval)
+                        continue
+            if locate_rule[0][0] == 'class' and locate_rule[1][0] == 'text':
+                for i in range(0, attempt_num):
+                    try:
+                        div_list = self.find_elements_by_class_name(locate_rule[0][1])
+                        i = 0
+                        for div in div_list:
+                            if div.text == locate_rule[1][1]:
+                                TouchActions(self).tap(div).perform()
+                                i += 1
+                                break
+                        if i == 0:
                             continue
-                if locate_rule[0][0] == 'class' and not locate_rule[1][0] == 'text':
-                    for i in range(0, attempt_num):
-                        try:
-                            div_list = self.find_elements_by_class_name(locate_rule[0][1])
-                            i = 0
-                            for div in div_list:
-                                if div.get_attribute(locate_rule[1][0]) == locate_rule[1][1]:
-                                    TouchActions(self).tap(div).perform()
-                                    i += 1
-                                    break
-                            if i == 0:
-                                continue
-                            break
-                        except WebDriverException:
-                            time.sleep(attempt_interval)
+                        break
+                    except WebDriverException:
+                        time.sleep(attempt_interval)
+                        continue
+            if locate_rule[0][0] == 'class' and not locate_rule[1][0] == 'text':
+                for i in range(0, attempt_num):
+                    try:
+                        div_list = self.find_elements_by_class_name(locate_rule[0][1])
+                        i = 0
+                        for div in div_list:
+                            if div.get_attribute(locate_rule[1][0]) == locate_rule[1][1]:
+                                TouchActions(self).tap(div).perform()
+                                i += 1
+                                break
+                        if i == 0:
                             continue
+                        break
+                    except WebDriverException:
+                        time.sleep(attempt_interval)
+                        continue
         if not self.use_mobile_emulation:
             if locate_rule[0][0] == 'id':
                 for i in range(0, attempt_num):
@@ -279,7 +278,7 @@ class violent_chromedriver(webdriver.Chrome):
                         time.sleep(attempt_interval)
                         continue
 
-    def v_send_keys(self, message, attempt_num=60, attempt_interval=1, locate_rule=None):
+    def v_send_keys(self, locate_rule, message, attempt_num=60, attempt_interval=1):
 
         """
                Post-packaging the [send_keys] function of selenium webdriver
@@ -434,11 +433,84 @@ class violent_chromedriver(webdriver.Chrome):
                     time.sleep(attempt_interval)
                     continue
 
+    def v_get_text(self, locate_rule, attempt_num=60, attempt_interval=1):
+        """
+        Post-packaging the [.text] function , this function will keep getting text until the text is not empty
+        or the attempt_num has been using up , while there is no more attempt , this function may return a empty
+        text
+
+        :param locate_rule:  rule that locate the web element <two-dimension-array>
+        :param attempt_num:  num of attempt to get text until get a non empty text  <int>
+        :param attempt_interval:  interval of attempt in sec <int>
+        :return: the text of the web element find by locate_rule <string>
+        """
+        if locate_rule[0][0] == 'id':
+            for i in range(0, attempt_num):
+                try:
+                    text = self.find_element_by_id(locate_rule[0][1]).text
+                    if not text.strip() == '':
+                        return text
+                    else:
+                        continue
+                except WebDriverException:
+                    time.sleep(attempt_interval)
+                    continue
+        if locate_rule[0][0] == 'xpath':
+            for i in range(0, attempt_num):
+                try:
+                    text = self.find_element_by_xpath(locate_rule[0][1]).text
+                    if not text.strip() == '':
+                        return text
+                    else:
+                        continue
+                except WebDriverException:
+                    time.sleep(attempt_interval)
+                    continue
+        if locate_rule[0][0] == 'name':
+            for i in range(0, attempt_num):
+                try:
+                    text = self.find_element_by_name(locate_rule[0][1]).text
+                    if not text.strip() == '':
+                        return text
+                    else:
+                        continue
+                except WebDriverException:
+                    time.sleep(attempt_interval)
+                    continue
+        if locate_rule[0][0] == 'tag' and not locate_rule[1][0] == 'text':
+            for i in range(0, attempt_num):
+                try:
+                    tag_list = self.find_elements_by_tag_name(locate_rule[0][1])
+                    for tag in tag_list:
+                        if tag.get_attribute(locate_rule[1][0]) == locate_rule[1][1]:
+                            text = tag.text
+                            if not text.strip() == '':
+                                return text
+                            else:
+                                raise WebDriverException
+                except WebDriverException:
+                    time.sleep(attempt_interval)
+                    continue
+        if locate_rule[0][0] == 'class' and not locate_rule[1][0] == 'text':
+            for i in range(0, attempt_num):
+                try:
+                    div_list = self.find_elements_by_class_name(locate_rule[0][1])
+                    for div in div_list:
+                        text = div.text
+                        if not text.strip() == '':
+                            return text
+                        else:
+                            raise WebDriverException
+                except WebDriverException:
+                    time.sleep(attempt_interval)
+                    continue
+
+
     def is_page_refreshed(self, trigger, wait_time=60):
         """
         to see whether the web page refreshed in certain time
 
-        :param trigger: the web element that exist in the last page <webelement>
+        :param trigger: the web element that ONLY!!! exist in the last page and it is clickable <webelement>
         :param wait_time: the time(in sec) that wait until the page refreshed, default is 60 <int>
         :return: True if page is refreshed in wait_time ,
                   False if page is not refreshed in wait_time
@@ -450,7 +522,10 @@ class violent_chromedriver(webdriver.Chrome):
             is_refreshed = False
             for i in range(0, wait_time):
                 refresh_time = i
-                text = trigger.text
+                if self.use_mobile_emulation:
+                    TouchActions(self).tap(trigger).perform()
+                else:
+                    trigger.click()
                 time.sleep(1)
         except WebDriverException:
             is_refreshed = True
@@ -459,7 +534,7 @@ class violent_chromedriver(webdriver.Chrome):
         print("Page didn't refresh in 60 seconds!")
         return is_refreshed
 
-    def is_open_new_window(self, wait_time=60):
+    def is_opened_new_window(self, wait_time=60):
         """
         to see whether new window opened in certain time
 
