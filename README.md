@@ -32,7 +32,7 @@ then use your IDE to run this script or
 if successful, you will see the search result of 'test' by a mobile emulated browser
 
 For more code examples, please refer to the examples folder in source distribution or
-visit https://github.com/amazingTest/violent_webdriver/tree/master/examples
+visit https://github.com/amazingTest/violent-webdriver/tree/master/examples
 
 ## Contact me
 For information and suggestions you can contact me at 523314409@qq.com
