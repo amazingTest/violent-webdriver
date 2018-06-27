@@ -1,10 +1,10 @@
-# violent_webdriver
-violent_webdriver is created by post-packaging selenium webdriver,  violent_webdriver has many convinient functions
+# violent-webdriver
+violent-webdriver is created by post-packaging selenium webdriver,  violent-webdriver has many convinient functions
 which can highly insure the browser operation, you don't need to worry about whether the element is really present
-on current page or clickable at specific time while using violent webdriver. it will handle this sort
+on current page or clickable at specific time while using violent-webdriver. it will handle this sort
 of annoying problems
 
-Find the latest version on github : https://github.com/amazingTest/violent_webdriver
+Find the latest version on github : https://github.com/amazingTest/violent-webdriver
 
 ## Installation
 The last stable release is available on PyPI and can be installed with pip.
@@ -12,7 +12,7 @@ The last stable release is available on PyPI and can be installed with pip.
 
     $ pip install selenium
 
-    $ pip install violent_webdriver
+    $ pip install violent-webdriver
 
 ## Best Practice
 Firstly, create a python file: c:\folder\mytest.py
