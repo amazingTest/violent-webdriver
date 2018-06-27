@@ -8,7 +8,7 @@ Find the latest version on github : https://github.com/amazingTest/violent_webdr
 
 ## Installation
 The last stable release is available on PyPI and can be installed with pip.
-make sure that Chrome has been installed and match the selenium version
+**make sure that Chrome has been installed and match the selenium version**
 
     $ pip install selenium
 
