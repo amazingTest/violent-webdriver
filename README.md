@@ -8,7 +8,7 @@ Find the latest version on github : https://github.com/amazingTest/violent-webdr
 
 ## Installation
 The last stable release is available on PyPI and can be installed with pip.
-**make sure that Chrome has been installed and match the selenium version**
+**make sure that Chrome has been installed and match the selenium version** 
 
     $ pip install selenium
 
@@ -20,10 +20,10 @@ Firstly, create a python file: c:\folder\mytest.py
     # c:\folder\mytest.py
     from violent_webdriver import Chrome
 
-    dr = Chrome.violent_chromedriver(executable_path=[Chromedriver_Path], use_mobile_emulation=True)
+    dr = Chrome.violent_chromedriver(executable_path=[CHROMEDRIVER_PATH], use_mobile_emulation=True)
     dr.get('http://www.baidu.com')
-    dr.v_send_keys(locate_rule=[['tag', 'input'], ['name', 'word']], message='test')
-    dr.v_click(locate_rule=[['tag', 'button'], ['class', 'se-bn']])
+    dr.v_send_keys(locate_rule={'tag': 'input', 'name': 'word'}, message='test')
+    dr.v_click(locate_rule={'tag': 'button', 'class': 'se-bn'})
 
 then use your IDE to run this script or
 

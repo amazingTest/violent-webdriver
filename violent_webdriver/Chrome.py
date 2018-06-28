@@ -75,7 +75,7 @@ class violent_chromedriver(webdriver.Chrome):
             raise
         self._is_remote = False
 
-    def v_click(self, locate_rule, attempt_num=60, attempt_interval=1):
+    def v_click(self, locate_rule, attempt_num=60, attempt_interval=0.5):
 
         """
            Post-packaging the [click] function of selenium webdriver
@@ -85,53 +85,84 @@ class violent_chromedriver(webdriver.Chrome):
 
            :Args:
             - attempt_num <int>- the num of click you want to attempt, default num is 60
-            - attempt_interval <int>- the time interval of each attempt in second, default interval is 1s
-            - locate_rule <two-dimention array> - the rule that use to locate the webelement you want to operate
+            - attempt_interval <int>- the time interval of each attempt in second, default interval is 0.5s
+            - locate_rule <dic> - the rule that use to locate the web element you want to operate
 
-                for single-locate strategy , support : [id] , [xpath] , [name]
-                           eg [['id', 'some_id']] , [['xpath', 'some_xpath']] , [['name', 'some_name']]
+                for single-locate strategy , support : [id] , [xpath] , [name] [class_name]
+                           eg {'id': 'some_id'} , {'xpath': 'some_xpath'} , {'name': 'some_name'}
+                           ,  {'class': 'some_class_name'}
 
                 for multi-locate strategy , support : [tag -> text] , [tag -> attribute] ,
                                                       [class -> text] , [class -> attribute]
 
-                           eg [['tag', 'span'], ['text', 'login']]
-                              [['tag', 'input'], ['placeholder', 'only num']]
-                              [['class', 'c-tips-container'], ['text', 'login']]
-                              [['class', 's_form'], ['placeholder', 'only num']]
+                           eg {'tag': 'span', 'text': 'login'}
+                             {'tag': 'input', 'placeholder': 'only num'}
+                             {'class': 'c-tips-container', 'text': 'login'}
+                             {'class': 's_form', 'placeholder': 'only num'}
+
         """
-        if self.use_mobile_emulation:
-            if locate_rule[0][0] == 'id':
+
+        if locate_rule.items().__len__() == 1:
+            for key, value in locate_rule.items():
+                if key == 'id':
+                    for i in range(0, attempt_num):
+                        try:
+                            if self.use_mobile_emulation:
+                                TouchActions(self).tap(self.find_element_by_id(value)).perform()
+                            else:
+                                self.find_element_by_id(value).click()
+                            break
+                        except WebDriverException:
+                            time.sleep(attempt_interval)
+                            continue
+                if key == 'xpath':
+                    for i in range(0, attempt_num):
+                        try:
+                            if self.use_mobile_emulation:
+                                TouchActions(self).tap(self.find_element_by_xpath(value)).perform()
+                            else:
+                                self.find_element_by_xpath(value).click()
+                            break
+                        except WebDriverException:
+                            time.sleep(attempt_interval)
+                            continue
+                if key == 'name':
+                    for i in range(0, attempt_num):
+                        try:
+                            if self.use_mobile_emulation:
+                                TouchActions(self).tap(self.find_element_by_name(value)).perform()
+                            else:
+                                self.find_element_by_name(value).click()
+                            break
+                        except WebDriverException:
+                            time.sleep(attempt_interval)
+                            continue
+                if 'class' in key:
+                    for i in range(0, attempt_num):
+                        try:
+                            if self.use_mobile_emulation:
+                                TouchActions(self).tap(self.find_element_by_class_name(value)).perform()
+                            else:
+                                self.find_element_by_class_name(value).click()
+                            break
+                        except WebDriverException:
+                            time.sleep(attempt_interval)
+                            continue
+        if locate_rule.items().__len__() == 2:
+            key_list = []
+            for key in locate_rule.keys():
+                key_list.append(key)
+            if key_list[0] == 'tag' and key_list[1] == 'text':
                 for i in range(0, attempt_num):
                     try:
-                        TouchActions(self).tap(self.find_element_by_id(locate_rule[0][1])).perform()
-                        break
-                    except WebDriverException:
-                        time.sleep(attempt_interval)
-                        continue
-            if locate_rule[0][0] == 'xpath':
-                for i in range(0, attempt_num):
-                    try:
-                        TouchActions(self).tap(self.find_element_by_xpath(locate_rule[0][1])).perform()
-                        break
-                    except WebDriverException:
-                        time.sleep(attempt_interval)
-                        continue
-            if locate_rule[0][0] == 'name':
-                for i in range(0, attempt_num):
-                    try:
-                        TouchActions(self).tap(self.find_element_by_name(locate_rule[0][1])).perform()
-                        break
-                    except WebDriverException:
-                        time.sleep(attempt_interval)
-                        continue
-            if locate_rule[0][0] == 'tag' and locate_rule[1][0] == 'text':
-                for i in range(0, attempt_num):
-                    try:
-                        tag_list = self.find_elements_by_tag_name(locate_rule[0][1])
+                        tag_list = self.find_elements_by_tag_name(locate_rule[key_list[0]])
                         i = 0
                         for tag in tag_list:
-                            if tag.text == locate_rule[1][1]:
-                                TouchActions(self).tap(tag).perform()
+                            if tag.text == locate_rule[key_list[1]]:
+                                if self.use_mobile_emulation:
+                                    TouchActions(self).tap(tag).perform()
+                                else:
+                                   tag.click()
                                 i += 1
                                 break
                         if i == 0:
@@ -140,14 +171,17 @@ class violent_chromedriver(webdriver.Chrome):
                     except WebDriverException:
                         time.sleep(attempt_interval)
                         continue
-            if locate_rule[0][0] == 'tag' and not locate_rule[1][0] == 'text':
+            if key_list[0] == 'tag' and not key_list[1] == 'text':
                 for i in range(0, attempt_num):
                     try:
-                        tag_list = self.find_elements_by_tag_name(locate_rule[0][1])
+                        tag_list = self.find_elements_by_tag_name(locate_rule[key_list[0]])
                         i = 0
                         for tag in tag_list:
-                            if tag.get_attribute(locate_rule[1][0]) == locate_rule[1][1]:
-                                TouchActions(self).tap(tag).perform()
+                            if tag.get_attribute(key_list[1]) == locate_rule[key_list[1]]:
+                                if self.use_mobile_emulation:
+                                    TouchActions(self).tap(tag).perform()
+                                else:
+                                   tag.click()
                                 i += 1
                                 break
                         if i == 0:
@@ -156,14 +190,17 @@ class violent_chromedriver(webdriver.Chrome):
                     except WebDriverException:
                         time.sleep(attempt_interval)
                         continue
-            if locate_rule[0][0] == 'class' and locate_rule[1][0] == 'text':
+            if key_list[0] == 'class' and key_list[1] == 'text':
                 for i in range(0, attempt_num):
                     try:
-                        div_list = self.find_elements_by_class_name(locate_rule[0][1])
+                        div_list = self.find_elements_by_class_name(locate_rule[key_list[0]])
                         i = 0
                         for div in div_list:
-                            if div.text == locate_rule[1][1]:
-                                TouchActions(self).tap(div).perform()
+                            if div.text == locate_rule[key_list[1]]:
+                                if self.use_mobile_emulation:
+                                    TouchActions(self).tap(div).perform()
+                                else:
+                                   div.click()
                                 i += 1
                                 break
                         if i == 0:
@@ -172,103 +209,17 @@ class violent_chromedriver(webdriver.Chrome):
                     except WebDriverException:
                         time.sleep(attempt_interval)
                         continue
-            if locate_rule[0][0] == 'class' and not locate_rule[1][0] == 'text':
+            if key_list[0] == 'class' and not key_list[1] == 'text':
                 for i in range(0, attempt_num):
                     try:
-                        div_list = self.find_elements_by_class_name(locate_rule[0][1])
+                        div_list = self.find_elements_by_class_name(locate_rule[key_list[0]])
                         i = 0
                         for div in div_list:
-                            if div.get_attribute(locate_rule[1][0]) == locate_rule[1][1]:
-                                TouchActions(self).tap(div).perform()
-                                i += 1
-                                break
-                        if i == 0:
-                            continue
-                        break
-                    except WebDriverException:
-                        time.sleep(attempt_interval)
-                        continue
-        if not self.use_mobile_emulation:
-            if locate_rule[0][0] == 'id':
-                for i in range(0, attempt_num):
-                    try:
-                        self.find_element_by_id(locate_rule[0][1]).click()
-                        break
-                    except WebDriverException:
-                        time.sleep(attempt_interval)
-                        continue
-            if locate_rule[0][0] == 'xpath':
-                for i in range(0, attempt_num):
-                    try:
-                        self.find_element_by_xpath(locate_rule[0][1]).click()
-                        break
-                    except WebDriverException:
-                        time.sleep(attempt_interval)
-                        continue
-            if locate_rule[0][0] == 'name':
-                for i in range(0, attempt_num):
-                    try:
-                        self.find_element_by_name(locate_rule[0][1]).click()
-                        break
-                    except WebDriverException:
-                        time.sleep(attempt_interval)
-                        continue
-            if locate_rule[0][0] == 'tag' and locate_rule[1][0] == 'text':
-                for i in range(0, attempt_num):
-                    try:
-                        tag_list = self.find_elements_by_tag_name(locate_rule[0][1])
-                        i = 0
-                        for tag in tag_list:
-                            if tag.text == locate_rule[1][1]:
-                                tag.click()
-                                i += 1
-                                break
-                        if i == 0:
-                            continue
-                        break
-                    except WebDriverException:
-                        time.sleep(attempt_interval)
-                        continue
-            if locate_rule[0][0] == 'tag' and not locate_rule[1][0] == 'text':
-                for i in range(0, attempt_num):
-                    try:
-                        tag_list = self.find_elements_by_tag_name(locate_rule[0][1])
-                        i = 0
-                        for tag in tag_list:
-                            if tag.get_attribute(locate_rule[1][0]) == locate_rule[1][1]:
-                                tag.click()
-                                i += 1
-                                break
-                        if i == 0:
-                            continue
-                        break
-                    except WebDriverException:
-                        time.sleep(attempt_interval)
-                        continue
-            if locate_rule[0][0] == 'class' and locate_rule[1][0] == 'text':
-                for i in range(0, attempt_num):
-                    try:
-                        div_list = self.find_elements_by_class_name(locate_rule[0][1])
-                        i = 0
-                        for div in div_list:
-                            if div.text == locate_rule[1][1]:
-                                div.click()
-                                i += 1
-                                break
-                        if i == 0:
-                            continue
-                        break
-                    except WebDriverException:
-                        time.sleep(attempt_interval)
-                        continue
-            if locate_rule[0][0] == 'class' and not locate_rule[1][0] == 'text':
-                for i in range(0, attempt_num):
-                    try:
-                        div_list = self.find_elements_by_class_name(locate_rule[0][1])
-                        i = 0
-                        for div in div_list:
-                            if div.get_attribute(locate_rule[1][0]) == locate_rule[1][1]:
-                                div.click()
+                            if div.get_attribute(key_list[1]) == locate_rule[key_list[1]]:
+                                if self.use_mobile_emulation:
+                                    TouchActions(self).tap(div).perform()
+                                else:
+                                   div.click()
                                 i += 1
                                 break
                         if i == 0:
@@ -278,7 +229,7 @@ class violent_chromedriver(webdriver.Chrome):
                         time.sleep(attempt_interval)
                         continue
 
-    def v_send_keys(self, locate_rule, message, attempt_num=60, attempt_interval=1):
+    def v_send_keys(self, locate_rule, message, attempt_num=60, attempt_interval=0.5):
 
         """
                Post-packaging the [send_keys] function of selenium webdriver
@@ -289,222 +240,251 @@ class violent_chromedriver(webdriver.Chrome):
                :Args:
                 - message(string)- the message that you want to send
                 - attempt_num (int)- the num of click you want to attempt, default num is 60
-                - attempt_interval (int)- the time interval of each attempt in second, default interval is 1 second
-                - locate_rule (two-dimention array) - the rule that use to locate the webelement you want to operate
+                - attempt_interval (int)- the time interval of each attempt in second, default interval is 0.5 second
+                - locate_rule (dic) - the rule that use to locate the web element you want to operate
 
-                    for single-locate strategy , support : [id] , [xpath] , [name]
-                               eg [['id', 'some_id']] , [['xpath', 'some_xpath']] , [['name', 'some_name']]
+                    for single-locate strategy , support : [id] , [xpath] , [name] [class_name]
+                           eg {'id': 'some_id'} , {'xpath': 'some_xpath'} , {'name': 'some_name'}
+                           ,  {'class': 'some_class_name'}
 
-                    for multi-locate strategy , support : [tag -> text] , [tag -> attribute] ,
-                                                          [class -> text] , [class -> attribute]
+                for multi-locate strategy , support : [tag -> text] , [tag -> attribute] ,
+                                                      [class -> text] , [class -> attribute]
 
-                               eg [['tag', 'span'], ['text', 'login']]
-                                  [['tag', 'input'], ['placeholder', 'only num']]
-                                  [['class', 'c-tips-container'], ['text', 'login']]
-                                  [['class', 's_form'], ['placeholder', 'only num']]
+                           eg {'tag': 'span', 'text': 'login'}
+                             {'tag': 'input', 'placeholder': 'only num'}
+                             {'class': 'c-tips-container', 'text': 'login'}
+                             {'class': 's_form', 'placeholder': 'only num'}
         """
 
-        if locate_rule[0][0] == 'id':
-            for i in range(0, attempt_num):
-                try:
-                    self.find_element_by_id(locate_rule[0][1]).clear()
-                    if not self.find_element_by_id(locate_rule[0][1]).get_attribute('value').strip() == '':
+        if locate_rule.items().__len__() == 1:
+            for key, value in locate_rule.items():
+                if key == 'id':
+                    for i in range(0, attempt_num):
+                        try:
+                            self.find_element_by_id(value).clear()
+                            if not self.find_element_by_id(value).get_attribute('value').strip() == '':
+                                time.sleep(attempt_interval)
+                                continue
+                        except WebDriverException:
+                            time.sleep(attempt_interval)
+                            continue
+                        try:
+                            self.find_element_by_id(value).send_keys(message)
+                            break
+                        except WebDriverException:
+                            time.sleep(attempt_interval)
+                            continue
+                if key == 'xpath':
+                    for i in range(0, attempt_num):
+                        try:
+                            self.find_element_by_xpath(value).clear()
+                            if not self.find_element_by_xpath(value).get_attribute('value').strip() == '':
+                                time.sleep(attempt_interval)
+                                continue
+                        except WebDriverException:
+                            time.sleep(attempt_interval)
+                            continue
+                        try:
+                            self.find_element_by_xpath(value).send_keys(message)
+                            break
+                        except WebDriverException:
+                            time.sleep(attempt_interval)
+                            continue
+                if key == 'name':
+                    for i in range(0, attempt_num):
+                        try:
+                            self.find_element_by_name(value).clear()
+                            if not self.find_element_by_name(value).get_attribute('value').strip() == '':
+                                time.sleep(attempt_interval)
+                                continue
+                        except WebDriverException:
+                            time.sleep(attempt_interval)
+                            continue
+                        try:
+                            self.find_element_by_name(value).send_keys(message)
+                            break
+                        except WebDriverException:
+                            time.sleep(attempt_interval)
+                            continue
+                if 'class' in key:
+                    for i in range(0, attempt_num):
+                        try:
+                            self.find_element_by_class_name(value).clear()
+                            if not self.find_element_by_class_name(value).get_attribute('value').strip() == '':
+                                time.sleep(attempt_interval)
+                                continue
+                        except WebDriverException:
+                            time.sleep(attempt_interval)
+                            continue
+                        try:
+                            self.find_element_by_class_name(value).send_keys(message)
+                            break
+                        except WebDriverException:
+                            time.sleep(attempt_interval)
+                            continue
+        if locate_rule.items().__len__() == 2:
+            key_list = []
+            for key in locate_rule.keys():
+                key_list.append(key)
+            if key_list[0] == 'tag' and key_list[1] == 'text':
+                for i in range(0, attempt_num):
+                    try:
+                        tag_list = self.find_elements_by_tag_name(locate_rule[key_list[0]])
+                        i = 0
+                        for tag in tag_list:
+                            if tag.text == locate_rule[key_list[1]]:
+                                tag.clear()
+                                if not tag.get_attribute('value').strip() == '':
+                                    time.sleep(attempt_interval)
+                                    break
+                                tag.send_keys(message)
+                                i += 1
+                                break
+                        if i == 0:
+                            continue
+                        break
+                    except WebDriverException:
                         time.sleep(attempt_interval)
                         continue
-                except WebDriverException:
-                    time.sleep(attempt_interval)
-                    continue
-                try:
-                    self.find_element_by_id(locate_rule[0][1]).send_keys(message)
-                    break
-                except WebDriverException:
-                    time.sleep(attempt_interval)
-                    continue
-        if locate_rule[0][0] == 'xpath':
-            for i in range(0, attempt_num):
-                try:
-                    self.find_element_by_xpath(locate_rule[0][1]).clear()
-                    if not self.find_element_by_xpath(locate_rule[0][1]).get_attribute('value').strip() == '':
+            if key_list[0] == 'tag' and not key_list[1] == 'text':
+                for i in range(0, attempt_num):
+                    try:
+                        tag_list = self.find_elements_by_tag_name(locate_rule[key_list[0]])
+                        i = 0
+                        for tag in tag_list:
+                            if tag.get_attribute(key_list[1]) == locate_rule[key_list[1]]:
+                                tag.clear()
+                                if not tag.get_attribute('value').strip() == '':
+                                    time.sleep(attempt_interval)
+                                    break
+                                tag.send_keys(message)
+                                i += 1
+                                break
+                        if i == 0:
+                            continue
+                        break
+                    except WebDriverException:
                         time.sleep(attempt_interval)
                         continue
-                except WebDriverException:
-                    time.sleep(attempt_interval)
-                    continue
-                try:
-                    self.find_element_by_xpath(locate_rule[0][1]).send_keys(message)
-                    break
-                except WebDriverException:
-                    time.sleep(attempt_interval)
-                    continue
-        if locate_rule[0][0] == 'name':
-            for i in range(0, attempt_num):
-                try:
-                    self.find_element_by_name(locate_rule[0][1]).clear()
-                    if not self.find_element_by_name(locate_rule[0][1]).get_attribute('value').strip() == '':
+            if key_list[0] == 'class' and key_list[1] == 'text':
+                for i in range(0, attempt_num):
+                    try:
+                        tag_list = self.find_elements_by_class_name(locate_rule[key_list[0]])
+                        i = 0
+                        for tag in tag_list:
+                            if tag.text == locate_rule[key_list[1]]:
+                                tag.clear()
+                                if not tag.get_attribute('value').strip() == '':
+                                    time.sleep(attempt_interval)
+                                    break
+                                tag.send_keys(message)
+                                i += 1
+                                break
+                        if i == 0:
+                            continue
+                        break
+                    except WebDriverException:
                         time.sleep(attempt_interval)
                         continue
-                except WebDriverException:
-                    time.sleep(attempt_interval)
-                    continue
-                try:
-                    self.find_element_by_name(locate_rule[0][1]).send_keys(message)
-                    break
-                except WebDriverException:
-                    time.sleep(attempt_interval)
-                    continue
-        if locate_rule[0][0] == 'tag' and locate_rule[1][0] == 'text':
-            for i in range(0, attempt_num):
-                try:
-                    tag_list = self.find_elements_by_tag_name(locate_rule[0][1])
-                    i = 0
-                    for tag in tag_list:
-                        if tag.text == locate_rule[1][1]:
-                            tag.clear()
-                            if not tag.get_attribute('value').strip() == '':
-                                time.sleep(attempt_interval)
+            if key_list[0] == 'class' and not key_list[1] == 'text':
+                for i in range(0, attempt_num):
+                    try:
+                        tag_list = self.find_elements_by_class_name(locate_rule[key_list[0]])
+                        i = 0
+                        for tag in tag_list:
+                            if tag.get_attribute(key_list[1]) == locate_rule[key_list[1]]:
+                                tag.clear()
+                                if not tag.get_attribute('value').strip() == '':
+                                    time.sleep(attempt_interval)
+                                    break
+                                tag.send_keys(message)
+                                i += 1
                                 break
-                            tag.send_keys(message)
-                            i += 1
-                            break
-                    if i == 0:
+                        if i == 0:
+                            continue
+                        break
+                    except WebDriverException:
+                        time.sleep(attempt_interval)
                         continue
-                    break
-                except WebDriverException:
-                    time.sleep(attempt_interval)
-                    continue
-        if locate_rule[0][0] == 'tag' and not locate_rule[1][0] == 'text':
-            for i in range(0, attempt_num):
-                try:
-                    tag_list = self.find_elements_by_tag_name(locate_rule[0][1])
-                    i = 0
-                    for tag in tag_list:
-                        if tag.get_attribute(locate_rule[1][0]) == locate_rule[1][1]:
-                            tag.clear()
-                            if not tag.get_attribute('value').strip() == '':
-                                time.sleep(attempt_interval)
-                                break
-                            tag.send_keys(message)
-                            i += 1
-                            break
-                    if i == 0:
-                        continue
-                    break
-                except WebDriverException:
-                    time.sleep(attempt_interval)
-                    continue
-        if locate_rule[0][0] == 'class' and locate_rule[1][0] == 'text':
-            for i in range(0, attempt_num):
-                try:
-                    div_list = self.find_elements_by_class_name(locate_rule[0][1])
-                    i = 0
-                    for div in div_list:
-                        if div.text == locate_rule[1][1]:
-                            div.clear()
-                            if not div.get_attribute('value').strip() == '':
-                                time.sleep(attempt_interval)
-                                break
-                            div.send_keys(message)
-                            i += 1
-                            break
-                    if i == 0:
-                        continue
-                    break
-                except WebDriverException:
-                    time.sleep(attempt_interval)
-                    continue
-        if locate_rule[0][0] == 'class' and not locate_rule[1][0] == 'text':
-            for i in range(0, attempt_num):
-                try:
-                    div_list = self.find_elements_by_class_name(locate_rule[0][1])
-                    i = 0
-                    for div in div_list:
-                        if div.get_attribute(locate_rule[1][0]) == locate_rule[1][1]:
-                            div.clear()
-                            if not div.get_attribute('value').strip() == '':
-                                time.sleep(attempt_interval)
-                                break
-                            div.send_keys(message)
-                            i += 1
-                            break
-                    if i == 0:
-                        continue
-                    break
-                except WebDriverException:
-                    time.sleep(attempt_interval)
-                    continue
 
-    def v_get_text(self, locate_rule, attempt_num=60, attempt_interval=1):
+    def v_get_text(self, locate_rule, attempt_num=60, attempt_interval=0.5):
         """
         Post-packaging the [.text] function , this function will keep getting text until the text is not empty
         or the attempt_num has been using up , while there is no more attempt , this function may return a empty
         text
 
         :param locate_rule:  rule that locate the web element <two-dimension-array>
-        :param attempt_num:  num of attempt to get text until get a non empty text  <int>
-        :param attempt_interval:  interval of attempt in sec <int>
+        :param attempt_num:  num of attempt to get text until get a non empty text , default is 60 <int>
+        :param attempt_interval:  interval of attempt in sec , default is 0.5 sec <int>
         :return: the text of the web element find by locate_rule <string>
         """
-        if locate_rule[0][0] == 'id':
-            for i in range(0, attempt_num):
-                try:
-                    text = self.find_element_by_id(locate_rule[0][1]).text
-                    if not text.strip() == '':
-                        return text
-                    else:
-                        continue
-                except WebDriverException:
-                    time.sleep(attempt_interval)
-                    continue
-        if locate_rule[0][0] == 'xpath':
-            for i in range(0, attempt_num):
-                try:
-                    text = self.find_element_by_xpath(locate_rule[0][1]).text
-                    if not text.strip() == '':
-                        return text
-                    else:
-                        continue
-                except WebDriverException:
-                    time.sleep(attempt_interval)
-                    continue
-        if locate_rule[0][0] == 'name':
-            for i in range(0, attempt_num):
-                try:
-                    text = self.find_element_by_name(locate_rule[0][1]).text
-                    if not text.strip() == '':
-                        return text
-                    else:
-                        continue
-                except WebDriverException:
-                    time.sleep(attempt_interval)
-                    continue
-        if locate_rule[0][0] == 'tag' and not locate_rule[1][0] == 'text':
-            for i in range(0, attempt_num):
-                try:
-                    tag_list = self.find_elements_by_tag_name(locate_rule[0][1])
-                    for tag in tag_list:
-                        if tag.get_attribute(locate_rule[1][0]) == locate_rule[1][1]:
-                            text = tag.text
+        if locate_rule.items().__len__() == 1:
+            for key, value in locate_rule.items():
+                if key == 'id':
+                    for i in range(0, attempt_num):
+                        try:
+                            text = self.find_element_by_id(value).text
                             if not text.strip() == '':
                                 return text
                             else:
-                                raise WebDriverException
-                except WebDriverException:
-                    time.sleep(attempt_interval)
-                    continue
-        if locate_rule[0][0] == 'class' and not locate_rule[1][0] == 'text':
-            for i in range(0, attempt_num):
-                try:
-                    div_list = self.find_elements_by_class_name(locate_rule[0][1])
-                    for div in div_list:
-                        text = div.text
-                        if not text.strip() == '':
-                            return text
-                        else:
-                            raise WebDriverException
-                except WebDriverException:
-                    time.sleep(attempt_interval)
-                    continue
-
+                                continue
+                        except WebDriverException:
+                            time.sleep(attempt_interval)
+                            continue
+                if key == 'xpath':
+                    for i in range(0, attempt_num):
+                        try:
+                            text = self.find_element_by_xpath(value).text
+                            if not text.strip() == '':
+                                return text
+                            else:
+                                continue
+                        except WebDriverException:
+                            time.sleep(attempt_interval)
+                            continue
+                if key == 'name':
+                    for i in range(0, attempt_num):
+                        try:
+                            text = self.find_element_by_name(value).text
+                            if not text.strip() == '':
+                                return text
+                            else:
+                                continue
+                        except WebDriverException:
+                            time.sleep(attempt_interval)
+                            continue
+        if locate_rule.items().__len__() == 2:
+            key_list = []
+            for key in locate_rule.keys():
+                key_list.append(key)
+            if key_list[0] == 'tag':
+                for i in range(0, attempt_num):
+                    try:
+                        tag_list = self.find_elements_by_tag_name(locate_rule[key_list[0]])
+                        for tag in tag_list:
+                            if tag.get_attribute(key_list[1]) == locate_rule[key_list[1]]:
+                                text = tag.text
+                                if not text.strip() == '':
+                                    return text
+                                else:
+                                    raise WebDriverException
+                    except WebDriverException:
+                        time.sleep(attempt_interval)
+                        continue
+            if key_list[0] == 'class':
+                for i in range(0, attempt_num):
+                    try:
+                        tag_list = self.find_elements_by_class_name(locate_rule[key_list[0]])
+                        for tag in tag_list:
+                            if tag.get_attribute(key_list[1]) == locate_rule[key_list[1]]:
+                                text = tag.text
+                                if not text.strip() == '':
+                                    return text
+                                else:
+                                    raise WebDriverException
+                    except WebDriverException:
+                        time.sleep(attempt_interval)
+                        continue
 
     def is_page_refreshed(self, trigger, wait_time=60):
         """
@@ -555,3 +535,4 @@ class violent_chromedriver(webdriver.Chrome):
         if not is_opened:
             print("window didn't open in 60 seconds!")
             return is_opened
+

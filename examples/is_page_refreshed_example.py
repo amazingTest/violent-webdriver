@@ -5,6 +5,6 @@ dr = Chrome.violent_chromedriver(executable_path='C://MyDownloads/Download/chrom
 dr.get('https://www.baidu.com')
 dr.implicitly_wait(30)
 trigger = dr.find_element_by_name('tj_trtieba')
-dr.v_send_keys(locate_rule=[['tag', 'input'], ['class', 's_ipt']], message='test')
-dr.v_click(locate_rule=[['tag', 'input'], ['value', '百度一下']])
+dr.v_send_keys(locate_rule={'tag': 'input', 'class': 's_ipt'}, message='test')
+dr.v_click(locate_rule={'tag': 'input', 'value': '百度一下'})
 print(dr.is_page_refreshed(trigger))
