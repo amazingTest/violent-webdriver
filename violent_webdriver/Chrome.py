@@ -262,11 +262,11 @@ class violent_chromedriver(webdriver.Chrome):
                     for i in range(0, attempt_num):
                         try:
                             self.find_element_by_id(value).clear()
-                            if not self.find_element_by_id(value).get_attribute('value').strip() == '':
-                                time.sleep(attempt_interval)
-                                continue
                         except WebDriverException:
                             pass
+                        if not self.find_element_by_id(value).get_attribute('value').strip() == '':
+                            time.sleep(attempt_interval)
+                            continue
                         try:
                             self.find_element_by_id(value).send_keys(message)
                             break
@@ -277,11 +277,11 @@ class violent_chromedriver(webdriver.Chrome):
                     for i in range(0, attempt_num):
                         try:
                             self.find_element_by_xpath(value).clear()
-                            if not self.find_element_by_xpath(value).get_attribute('value').strip() == '':
-                                time.sleep(attempt_interval)
-                                continue
                         except WebDriverException:
                             pass
+                        if not self.find_element_by_xpath(value).get_attribute('value').strip() == '':
+                            time.sleep(attempt_interval)
+                            continue
                         try:
                             self.find_element_by_xpath(value).send_keys(message)
                             break
@@ -292,11 +292,11 @@ class violent_chromedriver(webdriver.Chrome):
                     for i in range(0, attempt_num):
                         try:
                             self.find_element_by_name(value).clear()
-                            if not self.find_element_by_name(value).get_attribute('value').strip() == '':
-                                time.sleep(attempt_interval)
-                                continue
                         except WebDriverException:
                             pass
+                        if not self.find_element_by_name(value).get_attribute('value').strip() == '':
+                            time.sleep(attempt_interval)
+                            continue
                         try:
                             self.find_element_by_name(value).send_keys(message)
                             break
@@ -307,11 +307,11 @@ class violent_chromedriver(webdriver.Chrome):
                     for i in range(0, attempt_num):
                         try:
                             self.find_element_by_class_name(value).clear()
-                            if not self.find_element_by_class_name(value).get_attribute('value').strip() == '':
-                                time.sleep(attempt_interval)
-                                continue
                         except WebDriverException:
                             pass
+                        if not self.find_element_by_class_name(value).get_attribute('value').strip() == '':
+                            time.sleep(attempt_interval)
+                            continue
                         try:
                             self.find_element_by_class_name(value).send_keys(message)
                             break
