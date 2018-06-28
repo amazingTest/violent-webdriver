@@ -261,15 +261,6 @@ class violent_chromedriver(webdriver.Chrome):
                 if key == 'id':
                     for i in range(0, attempt_num):
                         try:
-                            self.find_element_by_id(value).clear()
-                            if key == 'textarea' and not self.find_element_by_id(value).get_attribute(
-                                    'value').strip() == '':
-                                time.sleep(attempt_interval)
-                                continue
-                        except WebDriverException:
-                            time.sleep(attempt_interval)
-                            continue
-                        try:
                             self.find_element_by_id(value).send_keys(message)
                             break
                         except WebDriverException:
@@ -277,15 +268,6 @@ class violent_chromedriver(webdriver.Chrome):
                             continue
                 if key == 'xpath':
                     for i in range(0, attempt_num):
-                        try:
-                            self.find_element_by_xpath(value).clear()
-                            if key == 'textarea' and not self.find_element_by_id(value).get_attribute(
-                                    'value').strip() == '':
-                                time.sleep(attempt_interval)
-                                continue
-                        except WebDriverException:
-                            time.sleep(attempt_interval)
-                            continue
                         try:
                             self.find_element_by_xpath(value).send_keys(message)
                             break
@@ -295,15 +277,6 @@ class violent_chromedriver(webdriver.Chrome):
                 if key == 'name':
                     for i in range(0, attempt_num):
                         try:
-                            self.find_element_by_name(value).clear()
-                            if key == 'textarea' and not self.find_element_by_id(value).get_attribute(
-                                    'value').strip() == '':
-                                time.sleep(attempt_interval)
-                                continue
-                        except WebDriverException:
-                            time.sleep(attempt_interval)
-                            continue
-                        try:
                             self.find_element_by_name(value).send_keys(message)
                             break
                         except WebDriverException:
@@ -311,15 +284,6 @@ class violent_chromedriver(webdriver.Chrome):
                             continue
                 if 'class' in key:
                     for i in range(0, attempt_num):
-                        try:
-                            self.find_element_by_class_name(value).clear()
-                            if key == 'textarea' and not self.find_element_by_id(value).get_attribute(
-                                    'value').strip() == '':
-                                time.sleep(attempt_interval)
-                                continue
-                        except WebDriverException:
-                            time.sleep(attempt_interval)
-                            continue
                         try:
                             self.find_element_by_class_name(value).send_keys(message)
                             break
@@ -337,10 +301,6 @@ class violent_chromedriver(webdriver.Chrome):
                         i = 0
                         for tag in tag_list:
                             if tag.text == locate_rule[key_list[1]]:
-                                tag.clear()
-                                if key_list[0] == 'textarea' and not tag.get_attribute('value').strip() == '':
-                                    time.sleep(attempt_interval)
-                                    break
                                 tag.send_keys(message)
                                 i += 1
                                 break
@@ -357,10 +317,6 @@ class violent_chromedriver(webdriver.Chrome):
                         i = 0
                         for tag in tag_list:
                             if tag.get_attribute(key_list[1]) == locate_rule[key_list[1]]:
-                                tag.clear()
-                                if key_list[0] == 'textarea' and not tag.get_attribute('value').strip() == '':
-                                    time.sleep(attempt_interval)
-                                    break
                                 tag.send_keys(message)
                                 i += 1
                                 break
@@ -377,10 +333,6 @@ class violent_chromedriver(webdriver.Chrome):
                         i = 0
                         for tag in tag_list:
                             if tag.text == locate_rule[key_list[1]]:
-                                tag.clear()
-                                if key_list[0] == 'textarea' and not tag.get_attribute('value').strip() == '':
-                                    time.sleep(attempt_interval)
-                                    break
                                 tag.send_keys(message)
                                 i += 1
                                 break
@@ -397,10 +349,6 @@ class violent_chromedriver(webdriver.Chrome):
                         i = 0
                         for tag in tag_list:
                             if tag.get_attribute(key_list[1]) == locate_rule[key_list[1]]:
-                                tag.clear()
-                                if key_list[0] == 'textarea' and not tag.get_attribute('value').strip() == '':
-                                    time.sleep(attempt_interval)
-                                    break
                                 tag.send_keys(message)
                                 i += 1
                                 break
