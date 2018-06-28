@@ -453,6 +453,17 @@ class violent_chromedriver(webdriver.Chrome):
                         except WebDriverException:
                             time.sleep(attempt_interval)
                             continue
+                if 'class' in key:
+                    for i in range(0, attempt_num):
+                        try:
+                            text = self.find_element_by_class_name(value).text
+                            if not text.strip() == '':
+                                return text
+                            else:
+                                continue
+                        except WebDriverException:
+                            time.sleep(attempt_interval)
+                            continue
         if locate_rule.items().__len__() == 2:
             key_list = []
             for key in locate_rule.keys():
