@@ -1,5 +1,5 @@
 from selenium import webdriver
-from selenium.common.exceptions import WebDriverException
+from selenium.common.exceptions import WebDriverException, InvalidElementStateException
 from selenium.webdriver.common.touch_actions import TouchActions
 import time
 import warnings
@@ -261,6 +261,13 @@ class violent_chromedriver(webdriver.Chrome):
                 if key == 'id':
                     for i in range(0, attempt_num):
                         try:
+                            self.find_element_by_id(value).clear()
+                            if not self.find_element_by_id(value).get_attribute('value').strip() == '':
+                                time.sleep(attempt_interval)
+                                continue
+                        except WebDriverException:
+                            pass
+                        try:
                             self.find_element_by_id(value).send_keys(message)
                             break
                         except WebDriverException:
@@ -268,6 +275,13 @@ class violent_chromedriver(webdriver.Chrome):
                             continue
                 if key == 'xpath':
                     for i in range(0, attempt_num):
+                        try:
+                            self.find_element_by_xpath(value).clear()
+                            if not self.find_element_by_xpath(value).get_attribute('value').strip() == '':
+                                time.sleep(attempt_interval)
+                                continue
+                        except WebDriverException:
+                            pass
                         try:
                             self.find_element_by_xpath(value).send_keys(message)
                             break
@@ -277,6 +291,13 @@ class violent_chromedriver(webdriver.Chrome):
                 if key == 'name':
                     for i in range(0, attempt_num):
                         try:
+                            self.find_element_by_name(value).clear()
+                            if not self.find_element_by_name(value).get_attribute('value').strip() == '':
+                                time.sleep(attempt_interval)
+                                continue
+                        except WebDriverException:
+                            pass
+                        try:
                             self.find_element_by_name(value).send_keys(message)
                             break
                         except WebDriverException:
@@ -284,6 +305,13 @@ class violent_chromedriver(webdriver.Chrome):
                             continue
                 if 'class' in key:
                     for i in range(0, attempt_num):
+                        try:
+                            self.find_element_by_class_name(value).clear()
+                            if not self.find_element_by_class_name(value).get_attribute('value').strip() == '':
+                                time.sleep(attempt_interval)
+                                continue
+                        except WebDriverException:
+                            pass
                         try:
                             self.find_element_by_class_name(value).send_keys(message)
                             break
@@ -301,6 +329,13 @@ class violent_chromedriver(webdriver.Chrome):
                         i = 0
                         for tag in tag_list:
                             if tag.text == locate_rule[key_list[1]]:
+                                try:
+                                    tag.clear()
+                                except WebDriverException:
+                                    pass
+                                if not tag.get_attribute('value').strip() == '':
+                                    time.sleep(attempt_interval)
+                                    break
                                 tag.send_keys(message)
                                 i += 1
                                 break
@@ -317,6 +352,13 @@ class violent_chromedriver(webdriver.Chrome):
                         i = 0
                         for tag in tag_list:
                             if tag.get_attribute(key_list[1]) == locate_rule[key_list[1]]:
+                                try:
+                                    tag.clear()
+                                except WebDriverException:
+                                    pass
+                                if not tag.get_attribute('value').strip() == '':
+                                    time.sleep(attempt_interval)
+                                    break
                                 tag.send_keys(message)
                                 i += 1
                                 break
@@ -329,11 +371,18 @@ class violent_chromedriver(webdriver.Chrome):
             if key_list[0] == 'class' and key_list[1] == 'text':
                 for i in range(0, attempt_num):
                     try:
-                        tag_list = self.find_elements_by_class_name(locate_rule[key_list[0]])
+                        div_list = self.find_elements_by_class_name(locate_rule[key_list[0]])
                         i = 0
-                        for tag in tag_list:
-                            if tag.text == locate_rule[key_list[1]]:
-                                tag.send_keys(message)
+                        for div in div_list:
+                            if div.text == locate_rule[key_list[1]]:
+                                try:
+                                    div.clear()
+                                except WebDriverException:
+                                    pass
+                                if not div.get_attribute('value').strip() == '':
+                                    time.sleep(attempt_interval)
+                                    break
+                                div.send_keys(message)
                                 i += 1
                                 break
                         if i == 0:
@@ -345,11 +394,18 @@ class violent_chromedriver(webdriver.Chrome):
             if key_list[0] == 'class' and not key_list[1] == 'text':
                 for i in range(0, attempt_num):
                     try:
-                        tag_list = self.find_elements_by_class_name(locate_rule[key_list[0]])
+                        div_list = self.find_elements_by_class_name(locate_rule[key_list[0]])
                         i = 0
-                        for tag in tag_list:
-                            if tag.get_attribute(key_list[1]) == locate_rule[key_list[1]]:
-                                tag.send_keys(message)
+                        for div in div_list:
+                            if div.get_attribute(key_list[1]) == locate_rule[key_list[1]]:
+                                try:
+                                    div.clear()
+                                except WebDriverException:
+                                    pass
+                                if not div.get_attribute('value').strip() == '':
+                                    time.sleep(attempt_interval)
+                                    break
+                                div.send_keys(message)
                                 i += 1
                                 break
                         if i == 0:
