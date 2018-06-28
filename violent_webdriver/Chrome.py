@@ -86,7 +86,7 @@ class violent_chromedriver(webdriver.Chrome):
            :Args:
             - attempt_num <int>- the num of click you want to attempt, default num is 60
             - attempt_interval <int>- the time interval of each attempt in second, default interval is 0.5s
-            - locate_rule <dic> - the rule that use to locate the web element you want to operate
+            - locate_rule <dict> - the rule that use to locate the web element you want to operate
 
                 for single-locate strategy , support : [id] , [xpath] , [name] [class_name]
                            eg {'id': 'some_id'} , {'xpath': 'some_xpath'} , {'name': 'some_name'}
@@ -241,7 +241,7 @@ class violent_chromedriver(webdriver.Chrome):
                 - message(string)- the message that you want to send
                 - attempt_num (int)- the num of click you want to attempt, default num is 60
                 - attempt_interval (int)- the time interval of each attempt in second, default interval is 0.5 second
-                - locate_rule (dic) - the rule that use to locate the web element you want to operate
+                - locate_rule (dict) - the rule that use to locate the web element you want to operate
 
                     for single-locate strategy , support : [id] , [xpath] , [name] [class_name]
                            eg {'id': 'some_id'} , {'xpath': 'some_xpath'} , {'name': 'some_name'}
@@ -413,7 +413,7 @@ class violent_chromedriver(webdriver.Chrome):
         or the attempt_num has been using up , while there is no more attempt , this function may return a empty
         text
 
-        :param locate_rule:  rule that locate the web element <two-dimension-array>
+        :param locate_rule:  rule that locate the web element <dict>
         :param attempt_num:  num of attempt to get text until get a non empty text , default is 60 <int>
         :param attempt_interval:  interval of attempt in sec , default is 0.5 sec <int>
         :return: the text of the web element find by locate_rule <string>
