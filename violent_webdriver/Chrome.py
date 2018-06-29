@@ -426,13 +426,13 @@ class violent_chromedriver(webdriver.Chrome):
         :param attempt_interval:  interval of attempt in sec , default is 0.5 sec <int>
         :return: the text of the web element find by locate_rule, default is '' <string>
         """
-        global text
-        text = ''
 
         if locate_rule.items().__len__() == 1:
             for key, value in locate_rule.items():
                 if key == 'id':
                     for i in range(0, attempt_num):
+                        if i == attempt_num - 1:
+                            return ''
                         try:
                             text = self.find_element_by_id(value).text
                             if not text.strip() == '':
@@ -444,6 +444,8 @@ class violent_chromedriver(webdriver.Chrome):
                             continue
                 if key == 'xpath':
                     for i in range(0, attempt_num):
+                        if i == attempt_num - 1:
+                            return ''
                         try:
                             text = self.find_element_by_xpath(value).text
                             if not text.strip() == '':
@@ -455,6 +457,8 @@ class violent_chromedriver(webdriver.Chrome):
                             continue
                 if key == 'name':
                     for i in range(0, attempt_num):
+                        if i == attempt_num - 1:
+                            return ''
                         try:
                             text = self.find_element_by_name(value).text
                             if not text.strip() == '':
@@ -466,6 +470,8 @@ class violent_chromedriver(webdriver.Chrome):
                             continue
                 if 'class' in key:
                     for i in range(0, attempt_num):
+                        if i == attempt_num - 1:
+                            return ''
                         try:
                             text = self.find_element_by_class_name(value).text
                             if not text.strip() == '':
@@ -481,6 +487,8 @@ class violent_chromedriver(webdriver.Chrome):
                 key_list.append(key)
             if key_list[0] == 'tag':
                 for i in range(0, attempt_num):
+                    if i == attempt_num - 1:
+                        return ''
                     try:
                         tag_list = self.find_elements_by_tag_name(locate_rule[key_list[0]])
                         for tag in tag_list:
@@ -495,6 +503,8 @@ class violent_chromedriver(webdriver.Chrome):
                         continue
             if key_list[0] == 'class':
                 for i in range(0, attempt_num):
+                    if i == attempt_num - 1:
+                        return ''
                     try:
                         tag_list = self.find_elements_by_class_name(locate_rule[key_list[0]])
                         for tag in tag_list:
