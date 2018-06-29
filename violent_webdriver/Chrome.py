@@ -230,6 +230,7 @@ class violent_chromedriver(webdriver.Chrome):
                     continue
 
     def v_get_text(self, locate_rule, attempt_num=60, attempt_interval=0.5):
+
         """
         Post-packaging the [.text] function , this function will keep getting text until the text is not empty
         or the attempt_num has been using up , while there is no more attempt , this function may return a empty
@@ -239,6 +240,7 @@ class violent_chromedriver(webdriver.Chrome):
         :param attempt_num:  num of attempt to get text until get a non empty text , default is 60 <int>
         :param attempt_interval:  interval of attempt in sec , default is 0.5 sec <int>
         :return: the text of the web element find by locate_rule, default is '' <string>
+
         """
 
         if locate_rule.items().__len__() == 1:
@@ -276,6 +278,7 @@ class violent_chromedriver(webdriver.Chrome):
                     continue
 
     def v_get_value(self, locate_rule, attempt_num=60, attempt_interval=0.5):
+
         """
         Post-packaging the [get_attribute('value')] function , this function will keep getting value until the value is
         not empty or the attempt_num has been using up , while there is no more attempt , this function may return
@@ -285,6 +288,7 @@ class violent_chromedriver(webdriver.Chrome):
         :param attempt_num:  num of attempt to get text until get a non empty text , default is 60 <int>
         :param attempt_interval:  interval of attempt in sec , default is 0.5 sec <int>
         :return: the value of the web element find by locate_rule, default is '' <string>
+
         """
 
         if locate_rule.items().__len__() == 1:
@@ -322,6 +326,7 @@ class violent_chromedriver(webdriver.Chrome):
                     continue
 
     def is_page_refreshed(self, trigger, wait_time=60):
+
         """
         to see whether the web page refreshed in certain time
 
@@ -330,6 +335,7 @@ class violent_chromedriver(webdriver.Chrome):
         :return: True if page is refreshed in wait_time ,
                   False if page is not refreshed in wait_time
         """
+
         global refresh_time
         global is_refreshed
         try:
@@ -349,6 +355,7 @@ class violent_chromedriver(webdriver.Chrome):
         return is_refreshed
 
     def is_opened_new_window(self, wait_time=60):
+
         """
         to see whether new window opened in certain time
 
@@ -356,6 +363,7 @@ class violent_chromedriver(webdriver.Chrome):
         :return: True if new window is opened in wait_time ,
                   False if new window is not opened in wait_time
         """
+
         is_opened = False
         open_time = 0
         for i in range(0, wait_time):

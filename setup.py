@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="violent-webdriver",
-    version="1.0.14",
+    version="1.0.15",
     author="Yuyi Shao",
     author_email="523314409@qq.com",
     description="violent webdriver based on selenium",
