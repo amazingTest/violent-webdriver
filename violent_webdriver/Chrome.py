@@ -424,8 +424,11 @@ class violent_chromedriver(webdriver.Chrome):
         :param locate_rule:  rule that locate the web element <dict>
         :param attempt_num:  num of attempt to get text until get a non empty text , default is 60 <int>
         :param attempt_interval:  interval of attempt in sec , default is 0.5 sec <int>
-        :return: the text of the web element find by locate_rule <string>
+        :return: the text of the web element find by locate_rule, default is '' <string>
         """
+        global text
+        text = ''
+
         if locate_rule.items().__len__() == 1:
             for key, value in locate_rule.items():
                 if key == 'id':
