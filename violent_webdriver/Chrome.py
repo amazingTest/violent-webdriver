@@ -96,8 +96,8 @@ class violent_chromedriver(webdriver.Chrome):
                 for multi-locate strategy , support : [one_of_eight_locate_method -> text] ,
                                                      [one_of_eight_locate_method -> attribute]
 
-                           eg {'tag': 'span', 'text': 'login'}
-                             {'tag': 'input', 'placeholder': 'only num'}
+                           eg {'tag name': 'span', 'text': 'login'}
+                             {'tag name': 'input', 'placeholder': 'only num'}
                              {'class name': 'c-tips-container', 'text': 'login'}
                              {'class name': 's_form', 'placeholder': 'only num'}
 
@@ -180,8 +180,8 @@ class violent_chromedriver(webdriver.Chrome):
                     for multi-locate strategy , support : [one_of_eight_locate_method -> text] ,
                                                          [one_of_eight_locate_method -> attribute]
 
-                               eg {'tag': 'span', 'text': 'login'}
-                                 {'tag': 'input', 'placeholder': 'only num'}
+                               eg {'tag name': 'span', 'text': 'login'}
+                                 {'tag name': 'input', 'placeholder': 'only num'}
                                  {'class name': 'c-tips-container', 'text': 'login'}
                                  {'class name': 's_form', 'placeholder': 'only num'}
         """
@@ -232,7 +232,7 @@ class violent_chromedriver(webdriver.Chrome):
     def v_get_text(self, locate_rule, attempt_num=60, attempt_interval=0.5):
 
         """
-        Post-packaging the [.text] function , this function will keep getting text until the text is not empty
+        Post-packaging the [text] function , this function will keep getting text until the text is not empty
         or the attempt_num has been using up , while there is no more attempt , this function may return a empty
         text
 
