@@ -22,8 +22,8 @@ Firstly, create a python file: c:\folder\mytest.py
 
     dr = Chrome.violent_chromedriver(executable_path=[CHROMEDRIVER_PATH], use_mobile_emulation=True)
     dr.get('http://www.baidu.com')
-    dr.v_send_keys(locate_rule={'tag name': 'input', 'name': 'word'}, message='test')
-    dr.v_click(locate_rule={'tag name': 'button', 'class': 'se-bn'})
+    dr.v_send_keys(locate_rule={'css selector': 'input[name=\'word\']'}, message='test')
+    dr.v_click(locate_rule={'css selector': 'button[class=\'se-bn\']'})
 
 then use your IDE to run this script or
 
