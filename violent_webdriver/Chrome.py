@@ -6,6 +6,7 @@ import warnings
 from selenium.webdriver.remote.webdriver import WebDriver as RemoteWebDriver
 from selenium.webdriver.chrome.remote_connection import ChromeRemoteConnection
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
 
 
@@ -74,7 +75,7 @@ class violent_chromedriver(webdriver.Chrome):
             raise
         self._is_remote = False
 
-    def v_click(self, locate_rule, attempt_num=60, attempt_interval=0.5):
+    def v_click(self, locate_rule, attempt_num=60, attempt_interval=0.5, use_double_click=False):
 
         """
            Post-packaging the [click] function of selenium webdriver
@@ -86,6 +87,7 @@ class violent_chromedriver(webdriver.Chrome):
             - attempt_num <int>- the num of click you want to attempt, default num is 60
             - attempt_interval <int>- the time interval of each attempt in second, default interval is 0.5s
             - locate_rule <dict> - the rule that use to locate the web element you want to operate
+            - use_double_click <boolean> - whether use double click
 
                 for single-locate strategy , support : [id] , [xpath] , [link text] [partial link text]
                                                       [name] , [tag name] , [class name] [css selector]
@@ -107,9 +109,15 @@ class violent_chromedriver(webdriver.Chrome):
                 for i in range(0, attempt_num):
                     try:
                         if self.use_mobile_emulation:
-                            TouchActions(self).tap(self.find_element(key, value)).perform()
+                            if use_double_click:
+                                TouchActions(self).double_tap(self.find_element(key, value)).perform()
+                            else:
+                                TouchActions(self).tap(self.find_element(key, value)).perform()
                         else:
-                            self.find_element(key, value).click()
+                            if use_double_click:
+                                ActionChains(self).double_click(self.find_element(key, value)).perform()
+                            else:
+                                self.find_element(key, value).click()
                         break
                     except WebDriverException:
                         time.sleep(attempt_interval)
@@ -126,9 +134,15 @@ class violent_chromedriver(webdriver.Chrome):
                         for element in elements:
                             if element.text == locate_rule[key_list[1]]:
                                 if self.use_mobile_emulation:
-                                    TouchActions(self).tap(element).perform()
+                                    if use_double_click:
+                                        TouchActions(self).double_tap(element).perform()
+                                    else:
+                                        TouchActions(self).tap(element).perform()
                                 else:
-                                    element.click()
+                                    if use_double_click:
+                                        ActionChains(self).double_click(element).perform()
+                                    else:
+                                        element.click()
                                 i += 1
                                 break
                         if i == 0:
@@ -145,9 +159,15 @@ class violent_chromedriver(webdriver.Chrome):
                         for element in elements:
                             if element.get_attribute(key_list[1]) == locate_rule[key_list[1]]:
                                 if self.use_mobile_emulation:
-                                    TouchActions(self).tap(element).perform()
+                                    if use_double_click:
+                                        TouchActions(self).double_tap(element).perform()
+                                    else:
+                                        TouchActions(self).tap(element).perform()
                                 else:
-                                    element.click()
+                                    if use_double_click:
+                                        ActionChains(self).double_click(element).perform()
+                                    else:
+                                        element.click()
                                 i += 1
                                 break
                         if i == 0:
