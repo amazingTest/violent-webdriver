@@ -212,8 +212,10 @@ class violent_chromedriver(webdriver.Chrome):
                         self.find_element(key, value).clear()
                     except WebDriverException:
                         pass
-                    if not self.find_element(key, value).get_attribute('value').strip() == '':
-                        time.sleep(attempt_interval)
+                    try:
+                        if not self.find_element(key, value).get_attribute('value').strip() == '':
+                            time.sleep(attempt_interval)
+                    except BaseException:
                         continue
                     try:
                         self.find_element(key, value).send_keys(message)
