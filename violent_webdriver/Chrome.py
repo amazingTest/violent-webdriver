@@ -19,7 +19,7 @@ class violent_chromedriver(webdriver.Chrome):
     def __init__(self, executable_path="chromedriver", port=0, use_mobile_emulation=False,
                  options=None, service_args=None,
                  desired_capabilities=None, service_log_path=None,
-                 chrome_options=None):
+                 chrome_options=Options()):
         self.use_mobile_emulation = use_mobile_emulation
 
         """
