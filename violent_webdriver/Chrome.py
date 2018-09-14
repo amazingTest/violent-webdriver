@@ -219,6 +219,8 @@ class violent_chromedriver(webdriver.Chrome):
                         continue
                     try:
                         self.find_element(key, value).send_keys(message)
+                        if not self.find_element(key, value).get_attribute('value') == message:
+                            continue
                         break
                     except WebDriverException:
                         time.sleep(attempt_interval)
@@ -241,7 +243,10 @@ class violent_chromedriver(webdriver.Chrome):
                                 time.sleep(attempt_interval)
                                 break
                             element.send_keys(message)
-                            i += 1
+                            if not element.get_attribute('value') == message:
+                                pass
+                            else:
+                                i += 1
                             break
                     if i == 0:
                         continue
