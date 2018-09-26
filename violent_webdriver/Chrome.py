@@ -380,6 +380,30 @@ class violent_chromedriver(webdriver.Chrome):
         print("Page didn't refresh in " + str(wait_time) + " seconds!")
         return is_refreshed
 
+    def is_url_changed(self, current_url, wait_time=60):
+
+        """
+        to see whether the url changed in certain time
+
+        :param current_url: current url <str>
+        :param wait_time: the time(in sec) that wait until the url changed, default is 60 <int>
+        :return: True if url is changed in wait_time ,
+                  False if url is not changed in wait_time
+        """
+
+        changed_time = 0
+        is_changed = False
+        for i in range(0, wait_time):
+            if self.current_url is not current_url:
+                is_changed = True
+                print("Url changed time is:" + str(changed_time) + " seconds!")
+                return is_changed
+            changed_time = i
+            time.sleep(1)
+        if not is_changed:
+            print("Url didn't changed in " + str(wait_time) + " seconds!")
+            return is_changed
+
     def is_opened_new_window(self, wait_time=60):
 
         """
