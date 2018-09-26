@@ -394,7 +394,7 @@ class violent_chromedriver(webdriver.Chrome):
         changed_time = 0
         is_changed = False
         for i in range(0, wait_time):
-            if self.current_url is not current_url:
+            if not str(self.current_url) == str(current_url):
                 is_changed = True
                 print("Url changed time is:" + str(changed_time) + " seconds!")
                 return is_changed
