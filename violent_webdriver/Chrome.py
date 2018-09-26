@@ -271,8 +271,8 @@ class violent_chromedriver(webdriver.Chrome):
 
         if locate_rule.items().__len__() == 1:
             for key, value in locate_rule.items():
-                for i in range(0, attempt_num):
-                    if i == attempt_num - 1:
+                for i in range(0, attempt_num + 1):
+                    if i == attempt_num:
                         return ''
                     try:
                         text = self.find_element(key, value).text
@@ -287,8 +287,8 @@ class violent_chromedriver(webdriver.Chrome):
             key_list = []
             for key in locate_rule.keys():
                 key_list.append(key)
-            for i in range(0, attempt_num):
-                if i == attempt_num - 1:
+            for i in range(0, attempt_num + 1):
+                if i == attempt_num:
                     return ''
                 try:
                     elements = self.find_elements(key_list[0], locate_rule[key_list[0]])
@@ -319,8 +319,8 @@ class violent_chromedriver(webdriver.Chrome):
 
         if locate_rule.items().__len__() == 1:
             for key, value in locate_rule.items():
-                for i in range(0, attempt_num):
-                    if i == attempt_num - 1:
+                for i in range(0, attempt_num + 1):
+                    if i == attempt_num:
                         return ''
                     try:
                         text = self.find_element(key, value).get_attribute('value')
@@ -335,8 +335,8 @@ class violent_chromedriver(webdriver.Chrome):
             key_list = []
             for key in locate_rule.keys():
                 key_list.append(key)
-            for i in range(0, attempt_num):
-                if i == attempt_num - 1:
+            for i in range(0, attempt_num + 1):
+                if i == attempt_num:
                     return ''
                 try:
                     elements = self.find_elements(key_list[0], locate_rule[key_list[0]])
