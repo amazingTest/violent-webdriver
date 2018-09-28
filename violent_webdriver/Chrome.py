@@ -255,7 +255,7 @@ class violent_chromedriver(webdriver.Chrome):
                     time.sleep(attempt_interval)
                     continue
 
-    def v_get_text(self, locate_rule, attempt_num=60, attempt_interval=0.5):
+    def v_get_text(self, locate_rule, attempt_num=60, attempt_interval=0.5, ignore_text_list=None):
 
         """
         Post-packaging the [text] function , this function will keep getting text until the text is not empty
@@ -265,10 +265,12 @@ class violent_chromedriver(webdriver.Chrome):
         :param locate_rule:  rule that locate the web element <dict>
         :param attempt_num:  num of attempt to get text until get a non empty text , default is 60 <int>
         :param attempt_interval:  interval of attempt in sec , default is 0.5 sec <int>
+        :param ignore_text_list: if text is in this list, it will ignore it(not return it) and continue attempting <list>
         :return: the text of the web element find by locate_rule, default is '' <string>
 
         """
-
+        if ignore_text_list is None:
+            ignore_text_list = []
         if locate_rule.items().__len__() == 1:
             for key, value in locate_rule.items():
                 for i in range(0, attempt_num + 1):
@@ -276,7 +278,7 @@ class violent_chromedriver(webdriver.Chrome):
                         return ''
                     try:
                         text = self.find_element(key, value).text
-                        if not text.strip() == '':
+                        if not text.strip() == '' and text not in ignore_text_list:
                             return text
                         else:
                             continue
@@ -295,7 +297,7 @@ class violent_chromedriver(webdriver.Chrome):
                     for element in elements:
                         if element.get_attribute(key_list[1]) == locate_rule[key_list[1]]:
                             text = element.text
-                            if not text.strip() == '':
+                            if not text.strip() == '' and text not in ignore_text_list:
                                 return text
                             else:
                                 raise WebDriverException
@@ -303,7 +305,7 @@ class violent_chromedriver(webdriver.Chrome):
                     time.sleep(attempt_interval)
                     continue
 
-    def v_get_value(self, locate_rule, attempt_num=60, attempt_interval=0.5):
+    def v_get_value(self, locate_rule, attempt_num=60, attempt_interval=0.5, ignore_text_list=None):
 
         """
         Post-packaging the [get_attribute('value')] function , this function will keep getting value until the value is
@@ -313,10 +315,12 @@ class violent_chromedriver(webdriver.Chrome):
         :param locate_rule:  rule that locate the web element <dict>
         :param attempt_num:  num of attempt to get text until get a non empty text , default is 60 <int>
         :param attempt_interval:  interval of attempt in sec , default is 0.5 sec <int>
+        :param ignore_text_list: if text is in this list, it will ignore it(not return it) and continue attempting <list>
         :return: the value of the web element find by locate_rule, default is '' <string>
 
         """
-
+        if ignore_text_list is None:
+            ignore_text_list = []
         if locate_rule.items().__len__() == 1:
             for key, value in locate_rule.items():
                 for i in range(0, attempt_num + 1):
@@ -324,7 +328,7 @@ class violent_chromedriver(webdriver.Chrome):
                         return ''
                     try:
                         text = self.find_element(key, value).get_attribute('value')
-                        if not text.strip() == '':
+                        if not text.strip() == '' and text not in ignore_text_list:
                             return text
                         else:
                             continue
@@ -343,7 +347,7 @@ class violent_chromedriver(webdriver.Chrome):
                     for element in elements:
                         if element.get_attribute(key_list[1]) == locate_rule[key_list[1]]:
                             text = element.get_attribute('value')
-                            if not text.strip() == '':
+                            if not text.strip() == '' and text not in ignore_text_list:
                                 return text
                             else:
                                 raise WebDriverException
