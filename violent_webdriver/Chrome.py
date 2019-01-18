@@ -278,7 +278,7 @@ class violent_chromedriver(webdriver.Chrome):
                         return ''
                     try:
                         text = self.find_element(key, value).text
-                        if not text.strip() == '' and text not in ignore_text_list:
+                        if not text.strip() == '' and text.strip() not in ignore_text_list:
                             return text
                         else:
                             continue
@@ -297,7 +297,7 @@ class violent_chromedriver(webdriver.Chrome):
                     for element in elements:
                         if element.get_attribute(key_list[1]) == locate_rule[key_list[1]]:
                             text = element.text
-                            if not text.strip() == '' and text not in ignore_text_list:
+                            if not text.strip() == '' and text.strip() not in ignore_text_list:
                                 return text
                             else:
                                 raise WebDriverException
@@ -328,7 +328,7 @@ class violent_chromedriver(webdriver.Chrome):
                         return ''
                     try:
                         text = self.find_element(key, value).get_attribute('value')
-                        if not text.strip() == '' and text not in ignore_text_list:
+                        if not text.strip() == '' and text.strip() not in ignore_text_list:
                             return text
                         else:
                             continue
@@ -347,7 +347,7 @@ class violent_chromedriver(webdriver.Chrome):
                     for element in elements:
                         if element.get_attribute(key_list[1]) == locate_rule[key_list[1]]:
                             text = element.get_attribute('value')
-                            if not text.strip() == '' and text not in ignore_text_list:
+                            if not text.strip() == '' and text.strip() not in ignore_text_list:
                                 return text
                             else:
                                 raise WebDriverException
@@ -355,13 +355,14 @@ class violent_chromedriver(webdriver.Chrome):
                     time.sleep(attempt_interval)
                     continue
 
-    def is_page_refreshed(self, trigger, wait_time=60):
+    def is_page_refreshed(self, trigger, wait_time=60, detect_interval=0.5):
 
         """
         to see whether the web page refreshed in certain time
 
         :param trigger: the web element that ONLY!!! exist in the last page and it is clickable <webelement>
         :param wait_time: the time(in sec) that wait until the page refreshed, default is 60 <int>
+        :param detect_interval: time interval that detect whether page is refreshed
         :return: True if page is refreshed in wait_time ,
                   False if page is not refreshed in wait_time
         """
@@ -376,21 +377,22 @@ class violent_chromedriver(webdriver.Chrome):
                     TouchActions(self).tap(trigger).perform()
                 else:
                     trigger.click()
-                time.sleep(1)
+                time.sleep(detect_interval)
         except WebDriverException:
             is_refreshed = True
-            print("Page refresh time is:" + str(refresh_time) + " seconds!")
+            print("Page refresh time is:" + str(refresh_time * detect_interval) + " seconds!")
             return is_refreshed
-        print("Page didn't refresh in " + str(wait_time) + " seconds!")
+        print("Page didn't refresh in " + str(wait_time * detect_interval) + " seconds!")
         return is_refreshed
 
-    def is_url_changed(self, current_url, wait_time=60):
+    def is_url_changed(self, current_url, wait_time=60, detect_interval=0.5):
 
         """
         to see whether the url changed in certain time
 
         :param current_url: current url <str>
         :param wait_time: the time(in sec) that wait until the url changed, default is 60 <int>
+        :param detect_interval: time interval that detect whether url is changeed
         :return: True if url is changed in wait_time ,
                   False if url is not changed in wait_time
         """
@@ -400,12 +402,12 @@ class violent_chromedriver(webdriver.Chrome):
         for i in range(0, wait_time):
             if not str(self.current_url) == str(current_url):
                 is_changed = True
-                print("Url changed time is:" + str(changed_time) + " seconds!")
+                print("Url changed time is:" + str(changed_time * detect_interval) + " seconds!")
                 return is_changed
             changed_time = i
-            time.sleep(1)
+            time.sleep(detect_interval)
         if not is_changed:
-            print("Url didn't changed in " + str(wait_time) + " seconds!")
+            print("Url didn't changed in " + str(wait_time * detect_interval) + " seconds!")
             return is_changed
 
     def is_opened_new_window(self, wait_time=60):
