@@ -177,7 +177,7 @@ class violent_chromedriver(webdriver.Chrome):
                         time.sleep(attempt_interval)
                         continue
 
-    def v_send_keys(self, locate_rule, message, attempt_num=60, attempt_interval=0.5):
+    def v_send_keys(self, locate_rule, message, attempt_num=60, attempt_interval=0.5, use_clear_before=True):
 
         """
                Post-packaging the [send_keys] function of selenium webdriver
@@ -209,7 +209,7 @@ class violent_chromedriver(webdriver.Chrome):
             for key, value in locate_rule.items():
                 for i in range(0, attempt_num):
                     try:
-                        self.find_element(key, value).clear()
+                        self.find_element(key, value).clear() if use_clear_before else None
                     except WebDriverException:
                         pass
                     try:
@@ -236,7 +236,7 @@ class violent_chromedriver(webdriver.Chrome):
                     for element in elements:
                         if element.get_attribute(key_list[1]) == locate_rule[key_list[1]]:
                             try:
-                                element.clear()
+                                element.clear() if use_clear_before else None
                             except WebDriverException:
                                 pass
                             if not element.get_attribute('value').strip() == '':
@@ -392,7 +392,7 @@ class violent_chromedriver(webdriver.Chrome):
 
         :param current_url: current url <str>
         :param wait_time: the time(in sec) that wait until the url changed, default is 60 <int>
-        :param detect_interval: time interval that detect whether url is changeed
+        :param detect_interval: time interval that detect whether url is changed
         :return: True if url is changed in wait_time ,
                   False if url is not changed in wait_time
         """
