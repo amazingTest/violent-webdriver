@@ -46,12 +46,12 @@ Welcome to follow my public account 「智能自动化测试」by WeChat and con
 
 欢迎大家来关注我的个人公众号 「智能自动化测试」并进行深度交流
 
-<div align=center>![image](https://github.com/amazingTest/violent-webdriver/blob/master/images/publicAcount.jpg)
+![image](https://github.com/amazingTest/violent-webdriver/blob/master/images/publicAcount.jpg)
 
 Finally, if you really find this lib useful，**donation** is welcome by using your phone to scann the two-dimensional 
 code below
  
 最后，如果你觉得这个库真的好用的话可以扫码给作者一些鼓励哦~
 
-<div align=center>![image](https://github.com/amazingTest/violent-webdriver/blob/master/images/wechatDonation.jpg)
+![image](https://github.com/amazingTest/violent-webdriver/blob/master/images/wechatDonation.jpg)
 
