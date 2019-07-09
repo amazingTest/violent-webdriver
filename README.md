@@ -41,13 +41,17 @@ For more code examples, please refer to the examples folder in source distributi
 visit https://github.com/amazingTest/violent-webdriver/tree/master/examples
 
 ## Contact me
-For information and suggestions you can contact me at 523314409@qq.com
+
+Welcome to follow my public account 「智能自动化测试」by WeChat and contact me 
+
+欢迎大家来关注我的个人公众号 「智能自动化测试」并进行深度交流
+
+<div align=center>![image](https://github.com/amazingTest/violent-webdriver/blob/master/images/publicAcount.jpg)
 
 Finally, if you really find this lib useful，**donation** is welcome by using your phone to scann the two-dimensional 
 code below
  
 最后，如果你觉得这个库真的好用的话可以扫码给作者一些鼓励哦~
 
-![image](https://github.com/amazingTest/violent-webdriver/blob/master/images/wechatDonation.jpg)
-
+<div align=center>![image](https://github.com/amazingTest/violent-webdriver/blob/master/images/wechatDonation.jpg)
 
