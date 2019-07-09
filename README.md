@@ -5,8 +5,7 @@ which can highly insure the browser operation, you don't need to worry about whe
 on current page or clickable at specific time while using violent-webdriver. it will handle this sort
 of annoying problems
 
-violent-webdriver 诞生于二次封装 selenium webdriver，内部封装了许多方法来确保浏览器操作的执行性，你不需要去担心定位到的元素是否存在
-于当前页面或者是否在当前时刻处于可点击状态，报错重试机制可以帮你自动解决这些不必要的麻烦。
+violent-webdriver 诞生于二次封装 selenium webdriver，内部封装了许多方法来确保浏览器操作的执行性，你不需要去担心定位到的元素是否存在于当前页面或者元素是否在当前时刻处于可点击状态，报错重试机制可以帮你自动解决这些不必要的麻烦。
 
 
 Find the latest version on github : https://github.com/amazingTest/violent-webdriver
