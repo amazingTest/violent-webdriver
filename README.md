@@ -41,9 +41,9 @@ visit https://github.com/amazingTest/violent-webdriver/tree/master/examples
 
 ## Contact me
 
-Welcome to follow my public account 「智能自动化测试」by WeChat and contact me 
+Welcome to follow my public account 「智能测试开发」by WeChat and contact me 
 
-欢迎大家来关注我的个人公众号 「智能自动化测试」并进行深度交流
+欢迎大家来关注我的个人公众号 「智能测试开发」并进行深度交流
 
 ![image](https://github.com/amazingTest/violent-webdriver/blob/master/images/publicAcount.jpg)
 
