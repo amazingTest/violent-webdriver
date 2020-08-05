@@ -305,6 +305,44 @@ class violent_chromedriver(webdriver.Chrome):
                     time.sleep(attempt_interval)
                     continue
 
+    def v_get_attribute(self, locate_rule, attribute, attempt_num=60, attempt_interval=0.5, ignore_attribute_list=None):
+
+        if ignore_attribute_list is None:
+            ignore_attribute_list = []
+        if locate_rule.items().__len__() == 1:
+            for key, value in locate_rule.items():
+                for i in range(0, attempt_num + 1):
+                    if i == attempt_num:
+                        return ''
+                    try:
+                        attribute = self.find_element(key, value).get_attribute(attribute)
+                        if not attribute.strip() == '' and attribute.strip() not in ignore_attribute_list:
+                            return attribute
+                        else:
+                            continue
+                    except WebDriverException:
+                        time.sleep(attempt_interval)
+                        continue
+        if locate_rule.items().__len__() == 2:
+            key_list = []
+            for key in locate_rule.keys():
+                key_list.append(key)
+            for i in range(0, attempt_num + 1):
+                if i == attempt_num:
+                    return ''
+                try:
+                    elements = self.find_elements(key_list[0], locate_rule[key_list[0]])
+                    for element in elements:
+                        if element.get_attribute(key_list[1]) == locate_rule[key_list[1]]:
+                            attribute = element.get_attribute(attribute)
+                            if not attribute.strip() == '' and text.strip() not in ignore_attribute_list:
+                                return attribute
+                            else:
+                                raise WebDriverException
+                except WebDriverException:
+                    time.sleep(attempt_interval)
+                    continue
+
     def v_get_value(self, locate_rule, attempt_num=60, attempt_interval=0.5, ignore_text_list=None):
 
         """
